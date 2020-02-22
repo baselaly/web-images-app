@@ -2,21 +2,20 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password', 'bio', 'active', 'image',
     ];
 
     /**
@@ -25,15 +24,110 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+    ];
+
+    protected $appends = [
+        'slug',
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the identifier that will be stored in the subject claim of the JWT.
      *
-     * @var array
+     * @return mixed
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = $value;
+    }
+
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['last_name'] = $value;
+    }
+
+    public function setBioAttribute($value)
+    {
+        $this->attributes['bio'] = $value;
+    }
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = $value;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function setActiveAttribute($value)
+    {
+        $this->attributes['active'] = $value;
+    }
+
+    public function setImageAttribute($value)
+    {
+        if (!$value) {
+            return;
+        }
+
+        $imageName = time() . '_' . uniqid() . '.' . $value->getClientOriginalExtension();
+
+        if (!Storage::disk('users')->put($imageName, File::get($value))) {
+            throw new \Exception('error in uploading image');
+        }
+
+        $this->attributes['image'] = $imageName;
+    }
+
+    public function getSlugAttribute()
+    {
+        return str_slug($this->first_name . ' ' . $this->last_name, '-');
+    }
+
+    public function getFirstNameAttribute()
+    {
+        return $this->first_name;
+    }
+
+    public function getLastNameAttribute()
+    {
+        return $this->last_name;
+    }
+
+    public function getBioAttribute()
+    {
+        return $this->bio;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->email;
+    }
+
+    public function getImageAttribute()
+    {
+        return asset('storage/users/' . $this->image);
+    }
+
+    public function getActiveAttribute()
+    {
+        return $this->active;
+    }
 }
