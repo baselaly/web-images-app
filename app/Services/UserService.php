@@ -36,4 +36,9 @@ class UserService
     {
         JWTAuth::invalidate(JWTAuth::getToken());
     }
+
+    public function getAuthenticatedUser()
+    {
+        return JWTAuth::parseToken()->authenticate();
+    }
 }

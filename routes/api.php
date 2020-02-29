@@ -5,5 +5,9 @@ Route::group(['middleware' => 'api'], function () {
         Route::post('/register', ['as' => 'register', 'uses' => 'UserController@register']);
         Route::post('/login', ['as' => 'login', 'uses' => 'UserController@login']);
         Route::get('/logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
+
+        Route::group(['middleware' => 'user_auth'], function () {
+            Route::post('/post/store', ['as' => 'post.store', 'uses' => 'PostController@store']);
+        });
     });
 });

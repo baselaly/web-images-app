@@ -101,33 +101,37 @@ class User extends Authenticatable implements JWTSubject
         return str_slug($this->first_name . ' ' . $this->last_name, '-');
     }
 
-    public function getFirstNameAttribute()
+    public function getFirstNameAttribute($value)
     {
-        return $this->first_name;
+        return $value;
     }
 
-    public function getLastNameAttribute()
+    public function getLastNameAttribute($value)
     {
-        return $this->last_name;
+        return $value;
     }
 
-    public function getBioAttribute()
+    public function getBioAttribute($value)
     {
-        return $this->bio;
+        return $value;
     }
 
-    public function getEmailAttribute()
+    public function getEmailAttribute($value)
     {
-        return $this->email;
+        return $value;
     }
 
-    public function getImageAttribute()
+    public function getImageAttribute($value)
     {
-        return asset('storage/users/' . $this->image);
+        if (!$value) {
+            return asset('storage/users/user.png');
+        }
+
+        return asset('storage/users/' . $value);
     }
 
-    public function getActiveAttribute()
+    public function getActiveAttribute($value)
     {
-        return $this->active;
+        return $value;
     }
 }

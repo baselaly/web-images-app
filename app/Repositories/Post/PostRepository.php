@@ -13,8 +13,9 @@ class PostRepository implements PostRepositoryInterface
         $this->post = $post;
     }
 
-    public function create($userData)
+    public function create($postData, $postImages)
     {
-        $this->post->create($userData);
+        $post = $this->post->create($postData);
+        $post->images()->createMany($postImages);
     }
 }
