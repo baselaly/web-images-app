@@ -23,7 +23,7 @@ class UserAuth
             }
             return $next($request);
         } catch (\Exception $e) {
-            return response()->json('something went wrong', 422);
+            return response()->json('not authenticated', 500);
         }
     }
 }

@@ -51,4 +51,9 @@ class Post extends Model
     {
         return $this->hasMany('App\PostImage');
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('active', 1);
+    }
 }

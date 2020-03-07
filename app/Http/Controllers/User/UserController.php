@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Services\PostService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
 
@@ -39,7 +40,7 @@ class UserController extends Controller
             }
             return response()->json(compact('token'), 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'something went wrong!'], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -49,7 +50,15 @@ class UserController extends Controller
             $this->userService->logout();
             return response()->json(['message' => 'user logged out'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'something went wrong!'], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
+    }
+
+    public function getMyProfile(PostService $postService)
+    {
+        $user = $this->userService->getAuthenticatedUser();
+        $posts = $postService->getUserPosts($user->id);
+
+        return response()->json(compact('user', 'posts'), 200);
     }
 }

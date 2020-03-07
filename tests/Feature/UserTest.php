@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use JWTAuth;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -22,6 +23,19 @@ class UserTest extends TestCase
             'password' => '12345678',
             'password_confirmation' => '12345678',
         ];
+    }
+
+    protected function headers($user = null)
+    {
+        $headers = ['Accept' => 'application/json'];
+
+        if (!is_null($user)) {
+            $token = JWTAuth::fromUser($user);
+            JWTAuth::setToken($token);
+            $headers['Authorization'] = 'Bearer ' . $token;
+        }
+
+        return $headers;
     }
 
     public function test_user_register()
@@ -148,5 +162,20 @@ class UserTest extends TestCase
 
         $response = $this->json('POST', '/api/user/login', $credentials);
         $response->assertStatus(401);
+    }
+
+    public function test_get_my_profile_for_authenticated_user()
+    {
+        $user = factory('App\User')->create();
+        $jwtToken = $this->headers($user);
+        $response = $this->json('GET', '/api/user/profile', [], $jwtToken);
+        $response->assertStatus(200);
+    }
+
+    public function test_get_my_profile_for_not_authenticated_user()
+    {
+        $jwtToken = $this->headers();
+        $response = $this->json('GET', '/api/user/profile', [], $jwtToken);
+        $response->assertStatus(500);
     }
 }
