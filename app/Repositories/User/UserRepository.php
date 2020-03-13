@@ -17,4 +17,15 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->user->create($userData);
     }
+
+    public function getUserBy(array $columns = [])
+    {
+        $user = $this->user->newQuery();
+
+        foreach ($columns as $column => $value) {
+            $user->where($column, $value);
+        }
+
+        return $user->first();
+    }
 }

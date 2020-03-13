@@ -58,7 +58,16 @@ class UserController extends Controller
     {
         $user = $this->userService->getAuthenticatedUser();
         $posts = $postService->getUserPosts($user->id);
+        return response()->json(compact('user', 'posts'), 200);
+    }
 
+    public function getUserProfile($userId, $slug, PostService $postService)
+    {
+        $user = $this->userService->getActiveUser($userId);
+        if (!$user) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+        $posts = $postService->getUserActivePosts($user->id);
         return response()->json(compact('user', 'posts'), 200);
     }
 }

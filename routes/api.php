@@ -8,7 +8,9 @@ Route::group(['middleware' => 'api'], function () {
 
         Route::group(['middleware' => 'user_auth'], function () {
             Route::post('/post/store', ['as' => 'post.store', 'uses' => 'PostController@store']);
-            Route::get('/profile', ['as' => 'profile', 'uses' => 'UserController@getMyProfile']);
+            Route::get('/profile', ['as' => 'my.profile', 'uses' => 'UserController@getMyProfile']);
         });
+
+        Route::get('/{userId}/{slug}', ['as' => 'view.profile', 'uses' => 'UserController@getUserProfile']);
     });
 });

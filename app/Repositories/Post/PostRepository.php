@@ -3,9 +3,12 @@
 namespace App\Repositories\Post;
 
 use App\Post;
+use App\Http\Traits\CacheKeys;
 
 class PostRepository implements PostRepositoryInterface
 {
+    use CacheKeys;
+
     private $post;
 
     public function __construct(Post $post)
@@ -20,8 +23,9 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    public function getPosts(string $cacheKey, array $columns = [])
+    public function getPostsBy(array $columns = [])
     {
+        $cacheKey = CacheKeys::getPostsKey($columns);
         return cache()->remember($cacheKey, env('CACHE_EXPIRE'), function () use ($columns) {
             $posts = $this->post->newQuery();
 
@@ -29,7 +33,7 @@ class PostRepository implements PostRepositoryInterface
                 $posts->where($column, $value);
             }
 
-            return $posts->active()->latest()->paginate(10);
+            return $posts->latest()->paginate(10);
         });
     }
 }

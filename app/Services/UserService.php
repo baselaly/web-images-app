@@ -41,4 +41,9 @@ class UserService
     {
         return JWTAuth::parseToken()->authenticate();
     }
+
+    public function getActiveUser($userId)
+    {
+        return $this->user->getUserBy(['id' => $userId, 'active' => 1]);
+    }
 }

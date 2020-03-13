@@ -1,11 +1,20 @@
 <?php
+
 namespace App\Http\Traits;
 
 trait CacheKeys
 {
-    public static function getProfilePostsKey($userId): string
+    public static function getPostsKey($columns): string
     {
         $page = request('page') ?: 1;
-        return "user.posts.$userId.$page";
+        $cacheKey = 'posts';
+
+        foreach ($columns as $key => $value) {
+            $cacheKey = $cacheKey . '.' . $key . '.' . $value;
+        }
+
+        $cacheKey = $cacheKey . '.page.' . $page;
+
+        return $cacheKey;
     }
 }

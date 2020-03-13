@@ -2,12 +2,10 @@
 
 namespace App\Services;
 
-use App\Http\Traits\CacheKeys;
 use App\Repositories\Post\PostRepositoryInterface;
 
 class PostService
 {
-    use CacheKeys;
     private $post;
 
     public function __construct(PostRepositoryInterface $post)
@@ -29,7 +27,11 @@ class PostService
 
     public function getUserPosts($userId)
     {
-        $cacheKey = CacheKeys::getProfilePostsKey($userId);
-        return $this->post->getPosts($cacheKey, ['user_id' => $userId]);
+        return $this->post->getPostsBy(['user_id' => $userId]);
+    }
+
+    public function getUserActivePosts($userId)
+    {
+        return $this->post->getPostsBy(['user_id' => $userId, 'active' => 1]);
     }
 }
