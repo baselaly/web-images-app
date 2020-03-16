@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JWTAuth;
 
 class storeFollowRequest extends FormRequest
 {
@@ -23,8 +24,10 @@ class storeFollowRequest extends FormRequest
      */
     public function rules()
     {
+        $userId = JWTAuth::parseToken()->authenticate()->id;
+
         return [
-            'user_id'=>'required|exists:users,id'
+            'user_id' => 'required|exists:users,id|not_in:' . $userId,
         ];
     }
 }
