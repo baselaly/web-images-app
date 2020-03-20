@@ -70,4 +70,77 @@ class FollowTest extends TestCase
         $response->assertJson(['message' => "You Already Follow This User"]);
         $response->assertStatus(403);
     }
+
+    public function test_unfollow_user()
+    {
+        $user = factory('App\User')->create();
+        $follower = factory('App\User')->create();
+
+        $jwtToken = $this->headers($follower);
+
+        $userFollow = factory('App\UserFollower')->create([
+            'user_id' => $user->id,
+            'follower_id' => $follower->id,
+        ]);
+
+        $response = $this->json('POST', '/api/user/unfollow',
+            array_merge(['user_follow_id' => $userFollow->id]), $jwtToken);
+
+        $response->assertJson(['message' => "unfollowed successfully"]);
+        $response->assertStatus(200);
+    }
+
+    public function test_unfollow_user_with_wrong_id()
+    {
+        $user = factory('App\User')->create();
+        $follower = factory('App\User')->create();
+
+        $jwtToken = $this->headers($follower);
+
+        $userFollow = factory('App\UserFollower')->create([
+            'user_id' => $user->id,
+            'follower_id' => $follower->id,
+        ]);
+
+        $response = $this->json('POST', '/api/user/unfollow',
+            array_merge(['user_follow_id' => $follower->id]), $jwtToken);
+
+        $response->assertStatus(422);
+    }
+
+    public function test_unfollow_user_with_wrong_follower()
+    {
+        $user = factory('App\User')->create();
+        $follower = factory('App\User')->create();
+
+        $jwtToken = $this->headers($user);
+
+        $userFollow = factory('App\UserFollower')->create([
+            'user_id' => $user->id,
+            'follower_id' => $follower->id,
+        ]);
+
+        $response = $this->json('POST', '/api/user/unfollow',
+            array_merge(['user_follow_id' => $userFollow->id]), $jwtToken);
+
+        $response->assertStatus(422);
+    }
+
+    public function test_unfollow_user_without_id()
+    {
+        $user = factory('App\User')->create();
+        $follower = factory('App\User')->create();
+
+        $jwtToken = $this->headers($user);
+
+        $userFollow = factory('App\UserFollower')->create([
+            'user_id' => $user->id,
+            'follower_id' => $follower->id,
+        ]);
+
+        $response = $this->json('POST', '/api/user/unfollow',
+            array_merge([]), $jwtToken);
+
+        $response->assertStatus(422);
+    }
 }

@@ -144,4 +144,18 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany('App\UserFollower', 'follower_id');
     }
+
+    public function activeFollowers()
+    {
+        return $this->hasMany('App\UserFollower', 'user_id')->whereHas('follower', function ($query) {
+            $query->active();
+        });
+    }
+
+    public function activeFollowings()
+    {
+        return $this->hasMany('App\UserFollower', 'follower_id')->whereHas('user', function ($query) {
+            $query->active();
+        });
+    }
 }
