@@ -4,10 +4,24 @@ namespace App\Http\Traits;
 
 trait CacheKeys
 {
-    public static function getPostsKey($columns): string
+    public static function getPostsKey(array $columns = []): string
     {
         $page = request('page') ?: 1;
         $cacheKey = 'posts';
+
+        foreach ($columns as $key => $value) {
+            $cacheKey = $cacheKey . '.' . $key . '.' . $value;
+        }
+
+        $cacheKey = $cacheKey . '.page.' . $page;
+
+        return $cacheKey;
+    }
+
+    public static function getUserFollowerKey(array $columns = []): string
+    {
+        $page = request('page') ?: 1;
+        $cacheKey = 'userFollowers';
 
         foreach ($columns as $key => $value) {
             $cacheKey = $cacheKey . '.' . $key . '.' . $value;

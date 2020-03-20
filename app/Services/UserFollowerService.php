@@ -40,9 +40,19 @@ class UserFollowerService
             'user_id' => $userId,
         ];
 
-        $follows = $this->userFollower->getBy($followData);
+        $follows = $this->userFollower->getSingleBy($followData);
 
-        return count($follows) ? true : false;
+        return $follows ? true : false;
+    }
+
+    public function getUserFollowers($userId)
+    {
+        return $this->userFollower->getBy(['user_id' => $userId], ['follower']);
+    }
+
+    public function getUserFollowings($userId)
+    {
+        return $this->userFollower->getBy(['follower_id' => $userId], ['user']);
     }
 
 }

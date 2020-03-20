@@ -14,5 +14,7 @@ Route::group(['middleware' => 'api'], function () {
         });
 
         Route::get('/{userId}/{slug}', ['as' => 'view.profile', 'uses' => 'UserController@getUserProfile']);
+        Route::get('/get/followers/{userId}', ['as' => 'user.get.followers', 'uses' => 'UserFollowerController@getUserFollowers']);
+        Route::get('/get/followings/{userId}', ['as' => 'user.get.followings', 'uses' => 'UserFollowerController@getUserFollowings']);
     });
 });

@@ -32,4 +32,16 @@ class UserFollowerController extends Controller
         return response()->json(['message' => 'unfollowed successfully'], 200);
     }
 
+    public function getUserFollowers($userId)
+    {
+        $followers = $this->userFollowerService->getUserFollowers($userId);
+        return response()->json(compact('followers'), 200);
+    }
+
+    public function getUserFollowings($userId)
+    {
+        $followings = $this->userFollowerService->getUserFollowings($userId);
+        return response()->json(compact('followings'), 200);
+    }
+
 }
