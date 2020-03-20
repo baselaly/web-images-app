@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
-class storeFollowRequest extends FormRequest
+class unFollowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class storeFollowRequest extends FormRequest
         $userId = JWTAuth::parseToken()->authenticate()->id;
 
         return [
-            'user_id' => 'required|exists:users,id|not_in:' . $userId,
+            'user_follow_id' => ['required', 'exists:user_followers,id,follower_id,' . $userId],
         ];
     }
 }

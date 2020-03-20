@@ -30,4 +30,9 @@ class UserFollowerRepository implements UserFollowerRepositoryInterface
 
         return $follows;
     }
+
+    public function delete($id)
+    {
+        $this->userFollower->find($id)->delete();
+    }
 }

@@ -28,6 +28,11 @@ class UserFollowerService
         return true;
     }
 
+    public function unFollowUser($userFollowId)
+    {
+        $this->userFollower->delete($userFollowId);
+    }
+
     public function checkFollowing($followerId, $userId)
     {
         $followData = [
