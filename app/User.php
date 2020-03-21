@@ -28,7 +28,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $appends = [
-        'slug',
+        'slug', 'followers_count', 'followings_count',
     ];
 
     /**
@@ -101,6 +101,16 @@ class User extends Authenticatable implements JWTSubject
         return str_slug($this->first_name . ' ' . $this->last_name, '-');
     }
 
+    public function getFollowersCountAttribute()
+    {
+        return $this->activeFollowings()->count();
+    }
+
+    public function getFollowingsCountAttribute()
+    {
+        return $this->activeFollowers()->count();
+    }
+
     public function getFirstNameAttribute($value)
     {
         return $value;
@@ -157,5 +167,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\UserFollower', 'follower_id')->whereHas('user', function ($query) {
             $query->active();
         });
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
     }
 }

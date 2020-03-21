@@ -47,12 +47,12 @@ class UserFollowerService
 
     public function getUserFollowers($userId)
     {
-        return $this->userFollower->getBy(['user_id' => $userId], ['follower']);
+        return $this->userFollower->getBy(['user_id' => $userId], 'follower');
     }
 
     public function getUserFollowings($userId)
     {
-        return $this->userFollower->getBy(['follower_id' => $userId], ['user']);
+        return $this->userFollower->getBy(['follower_id' => $userId], 'user');
     }
 
 }

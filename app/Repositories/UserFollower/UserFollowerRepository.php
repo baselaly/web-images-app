@@ -33,7 +33,7 @@ class UserFollowerRepository implements UserFollowerRepositoryInterface
         return $follows;
     }
 
-    public function getBy(array $columns = [], array $with = [])
+    public function getBy(array $columns = [], string $with)
     {
         $cacheKey = CacheKeys::getUserFollowerKey($columns);
         return cache()->remember($cacheKey, env('CACHE_EXPIRE'), function () use ($columns, $with) {
@@ -43,7 +43,9 @@ class UserFollowerRepository implements UserFollowerRepositoryInterface
                 $follows->where($column, $value);
             }
 
-            return $follows->latest()->with($with)->paginate(10);
+            return $follows->whereHas($with, function ($query) {
+                $query->active();
+            })->latest()->with($with)->paginate(10);
         });
     }
 
