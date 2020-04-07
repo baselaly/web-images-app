@@ -51,7 +51,7 @@ class UserFollowerRepository implements UserFollowerRepositoryInterface
 
     public function delete($id)
     {
-        $userFollower = $this->getSingleBy(['id', $id]);
+        $userFollower = $this->getSingleBy(['id' => $id]);
         $userFollower->delete();
     }
 }

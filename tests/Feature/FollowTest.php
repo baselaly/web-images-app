@@ -84,7 +84,7 @@ class FollowTest extends TestCase
         ]);
 
         $response = $this->json('POST', '/api/user/unfollow',
-            array_merge(['user_follow_id' => $userFollow->id]), $jwtToken);
+            ['user_follow_id' => $userFollow->id], $jwtToken);
 
         $response->assertJson(['message' => "unfollowed successfully"]);
         $response->assertStatus(200);
