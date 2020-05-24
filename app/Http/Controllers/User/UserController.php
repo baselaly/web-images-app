@@ -5,6 +5,11 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Resources\Post\PostResource;
+use App\Http\Resources\Response\ErrorResource;
+use App\Http\Resources\Response\NotAuthenticatedResource;
+use App\Http\Resources\Response\NotFoundResource;
+use App\Http\Resources\Response\SuccessResource;
 use App\Services\PostService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
@@ -24,10 +29,10 @@ class UserController extends Controller
             DB::beginTransaction();
             $this->userService->register();
             DB::commit();
-            return response()->json(['message' => 'user registered'], 200);
+            return response()->json(new SuccessResource('user resgistered successfully'), 200);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(new ErrorResource($e->getMessage()), 500);
         }
     }
 
@@ -36,11 +41,11 @@ class UserController extends Controller
         try {
             $token = $this->userService->login();
             if (!$token) {
-                return response()->json(['message' => 'wrong credentials'], 401);
+                return response()->json(new NotAuthenticatedResource($request), 401);
             }
             return response()->json(compact('token'), 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(new ErrorResource($e->getMessage()), 500);
         }
     }
 
@@ -50,7 +55,7 @@ class UserController extends Controller
             $this->userService->logout();
             return response()->json(['message' => 'user logged out'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(new ErrorResource($e->getMessage()), 500);
         }
     }
 
@@ -58,16 +63,24 @@ class UserController extends Controller
     {
         $user = $this->userService->getAuthenticatedUser();
         $posts = $postService->getUserPosts($user->id);
-        return response()->json(compact('user', 'posts'), 200);
+        return response()->json([
+            'user' => $user,
+            'posts' => PostResource::collection($posts),
+            'more_data' => $posts->hasMorePages(),
+        ], 200);
     }
 
     public function getUserProfile($userId, $slug, PostService $postService)
     {
         $user = $this->userService->getActiveUser($userId);
         if (!$user) {
-            return response()->json(['message' => 'Not Found'], 404);
+            return response()->json(new NotFoundResource(request()), 404);
         }
         $posts = $postService->getUserActivePosts($user->id);
-        return response()->json(compact('user', 'posts'), 200);
+        return response()->json([
+            'user' => $user,
+            'posts' => PostResource::collection($posts),
+            'more_data' => $posts->hasMorePages(),
+        ], 200);
     }
 }

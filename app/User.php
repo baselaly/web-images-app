@@ -28,7 +28,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $appends = [
-        'slug', 'followers_count', 'followings_count',
+        'slug', 'followers_count', 'followings_count', 'fullname',
     ];
 
     /**
@@ -138,6 +138,11 @@ class User extends Authenticatable implements JWTSubject
         }
 
         return asset('storage/users/' . $value);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function getActiveAttribute($value)

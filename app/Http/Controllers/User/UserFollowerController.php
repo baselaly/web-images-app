@@ -5,6 +5,9 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FollowRequest;
 use App\Http\Requests\unFollowRequest;
+use App\Http\Resources\Follower\FollowerResource;
+use App\Http\Resources\Response\NotAuthorizedResource;
+use App\Http\Resources\Response\SuccessResource;
 use App\Services\UserFollowerService;
 use App\Services\UserService;
 
@@ -22,26 +25,32 @@ class UserFollowerController extends Controller
         $user = $userService->getAuthenticatedUser();
         $follow = $this->userFollowerService->followUser($user->id, request('user_id'));
 
-        return $follow ? response()->json(['message' => 'followed successfully'], 200) :
-        response()->json(['message' => 'You Already Follow This User'], 403);
+        return $follow ? response()->json(new SuccessResource('Followed Successfully'), 200) :
+        response()->json(new NotAuthorizedResource('You Already Followed This User'), 403);
     }
 
     public function unFollow(unFollowRequest $request)
     {
         $this->userFollowerService->unFollowUser(request('user_follow_id'));
-        return response()->json(['message' => 'unfollowed successfully'], 200);
+        return response()->json(new SuccessResource('UnFollowed Successfully'), 200);
     }
 
     public function getUserFollowers($userId)
     {
         $followers = $this->userFollowerService->getUserFollowers($userId);
-        return response()->json(compact('followers'), 200);
+        return response()->json([
+            'followers' => FollowerResource::collection($followers),
+            'more_data' => $followers->hasMorePages(),
+        ], 200);
     }
 
     public function getUserFollowings($userId)
     {
         $followings = $this->userFollowerService->getUserFollowings($userId);
-        return response()->json(compact('followings'), 200);
+        return response()->json([
+            'followings' => FollowerResource::collection($followings),
+            'more_data' => $followings->hasMorePages(),
+        ], 200);
     }
 
 }
