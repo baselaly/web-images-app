@@ -22,11 +22,11 @@ class UserFollowerController extends Controller
 
     public function store(FollowRequest $request, UserService $userService)
     {
-        $user = $userService->getAuthenticatedUser();
+        $user = auth('api')->user();
         $follow = $this->userFollowerService->followUser($user->id, request('user_id'));
 
         return $follow ? response()->json(new SuccessResource('Followed Successfully'), 200) :
-        response()->json(new NotAuthorizedResource('You Already Followed This User'), 403);
+            response()->json(new NotAuthorizedResource('You Already Followed This User'), 403);
     }
 
     public function unFollow(unFollowRequest $request)
@@ -52,5 +52,4 @@ class UserFollowerController extends Controller
             'more_data' => $followings->hasMorePages(),
         ], 200);
     }
-
 }

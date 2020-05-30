@@ -36,4 +36,15 @@ class PostRepository implements PostRepositoryInterface
             return $posts->latest()->paginate(10);
         });
     }
+
+    public function getSinglePostBy(array $columns = [])
+    {
+        $post = $this->post->newQuery();
+
+        foreach ($columns as $column => $value) {
+            $post->where($column, $value);
+        }
+
+        return $post->first();
+    }
 }

@@ -17,14 +17,9 @@ class UserAuth
      */
     public function handle($request, Closure $next)
     {
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
-            if (!$user) {
-                return response()->json(new NotAuthenticatedResource($request), 401);
-            }
-            return $next($request);
-        } catch (\Exception $e) {
+        if (!auth('api')->check()) {
             return response()->json(new NotAuthenticatedResource($request), 401);
         }
+        return $next($request);
     }
 }

@@ -61,7 +61,7 @@ class UserController extends Controller
 
     public function getMyProfile(PostService $postService)
     {
-        $user = $this->userService->getAuthenticatedUser();
+        $user = auth('api')->user();
         $posts = $postService->getUserPosts($user->id);
         return response()->json([
             'user' => $user,

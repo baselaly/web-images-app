@@ -7,4 +7,5 @@ interface UserFollowerRepositoryInterface
     public function create(array $followData);
     public function getBy(array $columns = [], string $with);
     public function delete(int $userFollowId);
+    public function getSingleBy(array $columns = []);
 }

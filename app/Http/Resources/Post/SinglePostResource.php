@@ -4,7 +4,7 @@ namespace App\Http\Resources\Post;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostResource extends JsonResource
+class SinglePostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -29,7 +29,7 @@ class PostResource extends JsonResource
             'images' => $this->images->pluck('image'),
             'user_name' => $this->user->fullname,
             'user_image' => $this->user->image,
-            'user_id' => $this->user_id,
+            'user_id' => $this->user->id,
             'is_owner' => $isOwner
         ];
     }

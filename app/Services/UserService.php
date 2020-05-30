@@ -29,17 +29,12 @@ class UserService
             'active' => 1,
         ];
 
-        return JWTAuth::attempt($credentials);
+        return auth('api')->attempt($credentials);
     }
 
     public function logout()
     {
         JWTAuth::invalidate(JWTAuth::getToken());
-    }
-
-    public function getAuthenticatedUser()
-    {
-        return JWTAuth::parseToken()->authenticate();
     }
 
     public function getActiveUser($userId)

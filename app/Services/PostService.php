@@ -34,4 +34,14 @@ class PostService
     {
         return $this->post->getPostsBy(['user_id' => $userId, 'active' => 1]);
     }
+
+    public function getSinglePost($id)
+    {
+        return $this->post->getSinglePostBy(['id' => $id]);
+    }
+
+    public function getSingleActivePost($id)
+    {
+        return $this->post->getSinglePostBy(['id' => $id, 'active' => 1]);
+    }
 }
