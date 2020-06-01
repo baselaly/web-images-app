@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\Post\SinglePostResource;
 use App\Http\Resources\Response\ErrorResource;
+use App\Http\Resources\Response\NotAuthorizedResource;
 use App\Http\Resources\Response\NotFoundResource;
 use App\Http\Resources\Response\SuccessResource;
 use App\Services\PostService;
-use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -34,12 +34,16 @@ class PostController extends Controller
         }
     }
 
-    public function getPublicPost($id)
+    public function getPost($id)
     {
-        $post = $this->postService->getSingleActivePost($id);
+        $post = $this->postService->getSinglePost($id);
 
         if (!$post) {
             return response()->json(new NotFoundResource(request()), 404);
+        }
+
+        if (!$this->postService->checkPostView($post)) {
+            return response()->json(new NotAuthorizedResource('Not Authorized'), 403);
         }
 
         return response()->json(new SinglePostResource($post), 200);

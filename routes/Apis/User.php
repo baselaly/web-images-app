@@ -21,5 +21,5 @@ Route::group(['namespace' => 'User', 'prefix' => 'post', 'as' => 'posts.'], func
         Route::post('/store', ['as' => 'post.store', 'uses' => 'PostController@store']);
     });
 
-    Route::get('/{id}', ['as' => 'view', 'uses' => 'PostController@getPublicPost']);
+    Route::get('/{id}', ['as' => 'view', 'uses' => 'PostController@getPost']);
 });

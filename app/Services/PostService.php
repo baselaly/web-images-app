@@ -40,8 +40,19 @@ class PostService
         return $this->post->getSinglePostBy(['id' => $id]);
     }
 
-    public function getSingleActivePost($id)
+    public function checkPostView($post)
     {
-        return $this->post->getSinglePostBy(['id' => $id, 'active' => 1]);
+        if (auth('api')->check()) {
+            $user = auth('api')->user();
+            if ($user->id == $post->user_id) {
+                return true;
+            } elseif ($user->id != $post->user_id && $post->active == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return $post->active == 1 ? true : false;
+        }
     }
 }
