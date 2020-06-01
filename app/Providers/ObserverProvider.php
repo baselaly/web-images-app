@@ -23,6 +23,6 @@ class ObserverProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \App\PostImage::observe(\App\Observers\PostImageObserver::class);
     }
 }
