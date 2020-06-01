@@ -48,4 +48,28 @@ class PostController extends Controller
 
         return response()->json(new SinglePostResource($post), 200);
     }
+
+    public function delete($id)
+    {
+        try {
+            DB::beginTransaction();
+            $post = $this->postService->getSinglePost($id);
+
+            if (!$post) {
+                return response()->json(new NotFoundResource(request()), 404);
+            }
+
+            if ($post->user_id != auth('api')->user()->id) {
+                return response()->json(new NotAuthorizedResource('Not Authorized'), 403);
+            }
+
+            $this->postService->delete($id);
+            DB::commit();
+
+            return response()->json(new SinglePostResource($post), 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(new ErrorResource($e->getMessage()), 500);
+        }
+    }
 }

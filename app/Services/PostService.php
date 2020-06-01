@@ -55,4 +55,9 @@ class PostService
             return $post->active == 1 ? true : false;
         }
     }
+
+    public function delete($id)
+    {
+        $this->post->delete($id);
+    }
 }
