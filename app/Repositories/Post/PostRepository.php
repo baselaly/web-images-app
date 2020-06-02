@@ -23,15 +23,17 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    public function getPostsBy(array $columns = [])
+    public function getPostsBy(array $columns = [], array $userIds = [])
     {
-        $cacheKey = CacheKeys::getPostsKey($columns);
-        return cache()->remember($cacheKey, env('CACHE_EXPIRE'), function () use ($columns) {
+        $cacheKey = CacheKeys::getPostsKey($columns, $userIds);
+        return cache()->remember($cacheKey, env('CACHE_EXPIRE'), function () use ($columns, $userIds) {
             $posts = $this->post->newQuery();
 
             foreach ($columns as $column => $value) {
                 $posts->where($column, $value);
             }
+
+            $posts->whereIn('user_id', $userIds);
 
             return $posts->latest()->paginate(10);
         });

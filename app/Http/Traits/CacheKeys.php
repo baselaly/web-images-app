@@ -4,13 +4,17 @@ namespace App\Http\Traits;
 
 trait CacheKeys
 {
-    public static function getPostsKey(array $columns = []): string
+    public static function getPostsKey(array $columns = [], array $userIds = []): string
     {
         $page = request('page') ?: 1;
         $cacheKey = 'posts';
 
         foreach ($columns as $key => $value) {
             $cacheKey = $cacheKey . '.' . $key . '.' . $value;
+        }
+
+        if (count($userIds)) {
+            $cacheKey = $cacheKey . '.homePage.' . auth('api')->user()->id;
         }
 
         $cacheKey = $cacheKey . '.page.' . $page;
