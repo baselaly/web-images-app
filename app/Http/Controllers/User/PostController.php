@@ -66,7 +66,7 @@ class PostController extends Controller
             $this->postService->delete($post);
             DB::commit();
 
-            return response()->json(new SinglePostResource($post), 200);
+            return response()->json(new SuccessResource('Post Deleted'), 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(new ErrorResource($e->getMessage()), 500);
