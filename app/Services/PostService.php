@@ -35,6 +35,13 @@ class PostService
         return $this->post->getPostsBy(['user_id' => $userId, 'active' => 1]);
     }
 
+    public function getHomePosts($user)
+    {
+        $followingIds = $user->followings->pluck('user_id')->toArray();
+        array_push($followingIds, $user->id);
+        return $this->post->getPostsBy(['active' => 1], $followingIds);
+    }
+
     public function getSinglePost($id)
     {
         return $this->post->getSinglePostBy(['id' => $id]);

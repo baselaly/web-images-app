@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\Post\SinglePostResource;
 use App\Http\Resources\Response\ErrorResource;
 use App\Http\Resources\Response\NotAuthorizedResource;
@@ -32,6 +33,15 @@ class PostController extends Controller
             DB::rollback();
             return response()->json(new ErrorResource($e->getMessage()), 500);
         }
+    }
+
+    public function getHomePosts()
+    {
+        $posts = $this->postService->getHomePosts(auth('api')->user());
+        return response()->json([
+            'posts' => PostResource::collection($posts),
+            'more_data' => $posts->hasMorePages(),
+        ], 200);
     }
 
     public function getPost($id)
