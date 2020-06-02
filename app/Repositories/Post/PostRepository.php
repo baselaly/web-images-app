@@ -50,6 +50,6 @@ class PostRepository implements PostRepositoryInterface
 
     public function delete(int $id)
     {
-        $this->post->delete($id);
+        $this->post->where('id', $id)->delete();
     }
 }

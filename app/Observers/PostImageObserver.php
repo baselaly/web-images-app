@@ -9,6 +9,7 @@ class PostImageObserver
 {
     public function deleted(PostImage $postImage)
     {
+        dd("Dasd");
         Storage::disk('images')->delete($postImage->getOriginal('image'));
     }
 }

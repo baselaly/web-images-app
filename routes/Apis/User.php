@@ -19,6 +19,7 @@ Route::group(['namespace' => 'User', 'prefix' => 'user', 'as' => 'users.'], func
 Route::group(['namespace' => 'User', 'prefix' => 'post', 'as' => 'posts.'], function () {
     Route::group(['middleware' => 'user_auth'], function () {
         Route::post('/store', ['as' => 'post.store', 'uses' => 'PostController@store']);
+        Route::get('/delete/{id}', ['as' => 'post.delete', 'uses' => 'PostController@delete']);
     });
 
     Route::get('/{id}', ['as' => 'view', 'uses' => 'PostController@getPost']);
