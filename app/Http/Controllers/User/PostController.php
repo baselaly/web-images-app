@@ -63,7 +63,7 @@ class PostController extends Controller
                 return response()->json(new NotAuthorizedResource('Not Authorized'), 403);
             }
 
-            $this->postService->delete($id);
+            $this->postService->delete($post);
             DB::commit();
 
             return response()->json(new SinglePostResource($post), 200);

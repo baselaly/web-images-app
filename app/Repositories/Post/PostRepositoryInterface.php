@@ -2,10 +2,12 @@
 
 namespace App\Repositories\Post;
 
+use App\Post;
+
 interface PostRepositoryInterface
 {
     public function create(array $postData, array $postImages);
     public function getPostsBy(array $columns = []);
     public function getSinglePostBy(array $columns = []);
-    public function delete(int $id);
+    public function delete(Post $post);
 }

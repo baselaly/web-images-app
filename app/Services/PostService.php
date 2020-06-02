@@ -56,8 +56,8 @@ class PostService
         }
     }
 
-    public function delete($id)
+    public function delete($post)
     {
-        $this->post->delete($id);
+        $this->post->delete($post);
     }
 }

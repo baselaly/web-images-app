@@ -48,9 +48,8 @@ class PostRepository implements PostRepositoryInterface
         return $post->first();
     }
 
-    public function delete(int $id)
+    public function delete(Post $post)
     {
-        $post = $this->post->where('id', $id)->first();
         $post->delete();
     }
 }
