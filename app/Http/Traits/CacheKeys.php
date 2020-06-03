@@ -14,7 +14,7 @@ trait CacheKeys
         }
 
         if (count($userIds)) {
-            $cacheKey = $cacheKey . '.homePage.' . auth('api')->user()->id;
+            $cacheKey = $cacheKey . '.homePage.' . end($userIds);
         }
 
         $cacheKey = $cacheKey . '.page.' . $page;
