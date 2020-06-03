@@ -33,7 +33,9 @@ class PostRepository implements PostRepositoryInterface
                 $posts->where($column, $value);
             }
 
-            $posts->whereIn('user_id', $userIds);
+            if (count($userIds)) {
+                $posts->whereIn('user_id', $userIds);
+            }
 
             return $posts->latest()->paginate(10);
         });

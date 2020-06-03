@@ -10,6 +10,7 @@ use App\Http\Resources\Response\ErrorResource;
 use App\Http\Resources\Response\NotAuthenticatedResource;
 use App\Http\Resources\Response\NotFoundResource;
 use App\Http\Resources\Response\SuccessResource;
+use App\Http\Resources\User\SingleUserResource;
 use App\Services\PostService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +65,7 @@ class UserController extends Controller
         $user = auth('api')->user();
         $posts = $postService->getUserPosts($user->id);
         return response()->json([
-            'user' => $user,
+            'user' => new SingleUserResource($user),
             'posts' => PostResource::collection($posts),
             'more_data' => $posts->hasMorePages(),
         ], 200);
@@ -78,7 +79,7 @@ class UserController extends Controller
         }
         $posts = $postService->getUserActivePosts($user->id);
         return response()->json([
-            'user' => $user,
+            'user' => new SingleUserResource($user),
             'posts' => PostResource::collection($posts),
             'more_data' => $posts->hasMorePages(),
         ], 200);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FollowRequest;
 use App\Http\Requests\unFollowRequest;
 use App\Http\Resources\Follower\FollowerResource;
+use App\Http\Resources\Follower\FollowingResource;
 use App\Http\Resources\Response\NotAuthorizedResource;
 use App\Http\Resources\Response\SuccessResource;
 use App\Services\UserFollowerService;
@@ -48,7 +49,7 @@ class UserFollowerController extends Controller
     {
         $followings = $this->userFollowerService->getUserFollowings($userId);
         return response()->json([
-            'followings' => FollowerResource::collection($followings),
+            'followings' => FollowingResource::collection($followings),
             'more_data' => $followings->hasMorePages(),
         ], 200);
     }

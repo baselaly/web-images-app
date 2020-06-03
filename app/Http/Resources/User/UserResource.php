@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Follower;
+namespace App\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FollowerResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,10 @@ class FollowerResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'user_name' => $this->follower->fullname,
-            'user_image' => $this->follower->image,
-            'user_id' => $this->follower->id
+            'user_name' => $this->full_name,
+            'user_image' => $this->image,
+            'user_email' => $this->email,
+            'user_id' => $this->id
         ];
     }
 }
