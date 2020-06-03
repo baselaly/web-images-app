@@ -14,6 +14,7 @@ trait CacheKeys
         }
 
         if (count($userIds)) {
+            // specify that cached home page for that authenticated user as we pushed its id at the end of array in service
             $cacheKey = $cacheKey . '.homePage.' . end($userIds);
         }
 
