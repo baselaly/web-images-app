@@ -28,4 +28,9 @@ class UserRepository implements UserRepositoryInterface
 
         return $user->first();
     }
+
+    public function update($user, $userData)
+    {
+        return $user->update($userData);
+    }
 }

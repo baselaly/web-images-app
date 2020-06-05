@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\Response\ErrorResource;
 use App\Http\Resources\Response\NotAuthenticatedResource;
@@ -83,5 +84,18 @@ class UserController extends Controller
             'posts' => PostResource::collection($posts),
             'more_data' => $posts->hasMorePages(),
         ], 200);
+    }
+
+    public function update(UpdateProfileRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $this->userService->update(auth('api')->user()->id);
+            DB::commit();
+            return response()->json(new SuccessResource('Profile Updated Successfully'), 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(new ErrorResource($e->getMessage()), 500);
+        }
     }
 }

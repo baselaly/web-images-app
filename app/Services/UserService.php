@@ -41,4 +41,20 @@ class UserService
     {
         return $this->user->getUserBy(['id' => $userId, 'active' => 1]);
     }
+
+    public function update($userId)
+    {
+        $userData = [
+            'first_name' => request('first_name'),
+            'last_name' => request('last_name'),
+            'image' => request('image'),
+            'bio' => request('bio'),
+        ];
+
+        request('password') ? $userData['password'] = request('password') : '';
+
+        $user = $this->getActiveUser($userId);
+
+        $this->user->update($user, $userData);
+    }
 }

@@ -9,6 +9,7 @@ Route::group(['namespace' => 'User', 'prefix' => 'user', 'as' => 'users.'], func
         Route::post('/follow', ['as' => 'follow.store', 'uses' => 'UserFollowerController@store']);
         Route::post('/unfollow', ['as' => 'follow.delete', 'uses' => 'UserFollowerController@unFollow']);
         Route::get('/profile', ['as' => 'my.profile', 'uses' => 'UserController@getMyProfile']);
+        Route::post('/edit/profile', ['as' => 'profile.edit', 'uses' => 'UserController@update']);
     });
 
     Route::get('/{userId}/{slug}', ['as' => 'view.profile', 'uses' => 'UserController@getUserProfile']);

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Observers\PostObserver;
+use App\Observers\UserObserver;
 use App\Post;
+use App\User;
 use Illuminate\Support\ServiceProvider;
 
 class ObserverProvider extends ServiceProvider
@@ -26,5 +28,6 @@ class ObserverProvider extends ServiceProvider
     public function boot()
     {
         Post::observe(new PostObserver());
+        User::observe(new UserObserver());
     }
 }

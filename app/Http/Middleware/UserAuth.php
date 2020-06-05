@@ -20,6 +20,11 @@ class UserAuth
         if (!auth('api')->check()) {
             return response()->json(new NotAuthenticatedResource($request), 401);
         }
+
+        if (auth('api')->user()->active == 0) {
+            return response()->json(new NotAuthenticatedResource($request), 401);
+        }
+
         return $next($request);
     }
 }
