@@ -22,6 +22,7 @@ Route::group(['namespace' => 'User', 'prefix' => 'post', 'as' => 'posts.'], func
         Route::get('/home', ['as' => 'post.home', 'uses' => 'PostController@getHomePosts']);
         Route::post('/store', ['as' => 'post.store', 'uses' => 'PostController@store']);
         Route::get('/delete/{id}', ['as' => 'post.delete', 'uses' => 'PostController@delete']);
+        Route::post('/update/{id}', ['as' => 'post.update', 'uses' => 'PostController@update']);
     });
 
     Route::get('/{id}', ['as' => 'view', 'uses' => 'PostController@getPost']);

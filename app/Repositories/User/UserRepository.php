@@ -29,7 +29,7 @@ class UserRepository implements UserRepositoryInterface
         return $user->first();
     }
 
-    public function update($user, array $userData = [])
+    public function update(User $user, array $userData)
     {
         return $user->update($userData);
     }

@@ -67,4 +67,13 @@ class PostService
     {
         $this->post->delete($post);
     }
+
+    public function update($post)
+    {
+        $postData = [
+            'body' => request('body')
+        ];
+
+        $this->post->update($post, $postData);
+    }
 }

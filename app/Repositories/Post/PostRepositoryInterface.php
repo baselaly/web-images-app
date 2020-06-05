@@ -10,4 +10,5 @@ interface PostRepositoryInterface
     public function getPostsBy(array $columns = [], array $userIds = []);
     public function getSinglePostBy(array $columns = []);
     public function delete(Post $post);
+    public function update(Post $post, array $postData);
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\Post\SinglePostResource;
 use App\Http\Resources\Response\ErrorResource;
@@ -77,6 +78,30 @@ class PostController extends Controller
             DB::commit();
 
             return response()->json(new SuccessResource('Post Deleted'), 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(new ErrorResource($e->getMessage()), 500);
+        }
+    }
+
+    public function update($id, UpdatePostRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $post = $this->postService->getSinglePost($id);
+
+            if (!$post) {
+                return response()->json(new NotFoundResource(request()), 404);
+            }
+
+            if ($post->user_id != auth('api')->user()->id) {
+                return response()->json(new NotAuthorizedResource('Not Authorized'), 403);
+            }
+
+            $this->postService->update($post);
+            DB::commit();
+
+            return response()->json(new SuccessResource('Post Updated'), 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(new ErrorResource($e->getMessage()), 500);
