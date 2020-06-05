@@ -3,15 +3,17 @@
 namespace App\Observers;
 
 use App\User;
+use Illuminate\Support\Facades\Storage;
 
 class UserObserver
 {
     public function updated(User $user)
     {
         if ($user->isDirty('image')) {
-            $newImage = $user->image;
             $oldImage = $user->getOriginal('image');
-            dd($newImage, $oldImage);
+            if ($oldImage) {
+                Storage::disk('users')->delete($oldImage);
+            }
         }
     }
 }
