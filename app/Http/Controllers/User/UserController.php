@@ -72,7 +72,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function getUserProfile($userId, $slug, PostService $postService)
+    public function getUserProfile($userId, PostService $postService)
     {
         $user = $this->userService->getActiveUser($userId);
         if (!$user) {

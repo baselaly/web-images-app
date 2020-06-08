@@ -12,9 +12,9 @@ Route::group(['namespace' => 'User', 'prefix' => 'user', 'as' => 'users.'], func
         Route::post('/edit/profile', ['as' => 'profile.edit', 'uses' => 'UserController@update']);
     });
 
-    Route::get('/{userId}/{slug}', ['as' => 'view.profile', 'uses' => 'UserController@getUserProfile']);
-    Route::get('/get/followers/{userId}', ['as' => 'user.get.followers', 'uses' => 'UserFollowerController@getUserFollowers']);
-    Route::get('/get/followings/{userId}', ['as' => 'user.get.followings', 'uses' => 'UserFollowerController@getUserFollowings']);
+    Route::get('/{userId}', ['as' => 'view.profile', 'uses' => 'UserController@getUserProfile']);
+    Route::get('/followers/{userId}', ['as' => 'user.get.followers', 'uses' => 'UserFollowerController@getUserFollowers']);
+    Route::get('/followings/{userId}', ['as' => 'user.get.followings', 'uses' => 'UserFollowerController@getUserFollowings']);
 });
 
 Route::group(['namespace' => 'User', 'prefix' => 'post', 'as' => 'posts.'], function () {
