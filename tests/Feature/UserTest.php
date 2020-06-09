@@ -12,7 +12,6 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-    use WithoutMiddleware;
 
     public function getUserData()
     {
@@ -22,6 +21,15 @@ class UserTest extends TestCase
             'email' => "user@user.com",
             'password' => '12345678',
             'password_confirmation' => '12345678',
+        ];
+    }
+
+    public function getUserNewData()
+    {
+        return [
+            'first_name' => "user",
+            'last_name' => "user",
+            "bio" => "bio",
         ];
     }
 
@@ -166,7 +174,7 @@ class UserTest extends TestCase
 
     public function test_get_my_profile_for_authenticated_user()
     {
-        $user = factory('App\User')->create();
+        $user = factory('App\User')->create(['active' => 1]);
         $jwtToken = $this->headers($user);
         $response = $this->json('GET', '/api/user/profile', [], $jwtToken);
         $response->assertStatus(200);
@@ -176,6 +184,111 @@ class UserTest extends TestCase
     {
         $jwtToken = $this->headers();
         $response = $this->json('GET', '/api/user/profile', [], $jwtToken);
-        $response->assertStatus(500);
+        $response->assertStatus(401);
+    }
+
+    public function test_update_my_profile()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', $newData, $jwtToken);
+        $response->assertJson(['message' => 'Profile Updated Successfully']);
+        $response->assertStatus(200);
+    }
+
+    public function test_update_my_profile_for_not_authenticated_user()
+    {
+        $jwtToken = $this->headers();
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', $newData, $jwtToken);
+        $response->assertStatus(401);
+    }
+
+    public function test_update_my_profile_with_missing_first_name()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge($newData, ['first_name' => '']), $jwtToken);
+        $response->assertStatus(422);
+    }
+
+    public function test_update_my_profile_with_missing_last_name()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge($newData, ['last_name' => '']), $jwtToken);
+        $response->assertStatus(422);
+    }
+
+    public function test_update_my_profile_with_max_bio()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge($newData, ['bio' => str_repeat('a', 1001)]), $jwtToken);
+        $response->assertStatus(422);
+    }
+
+    public function test_update_my_profile_with_pdf_as_image()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge(
+            $newData,
+            ['image' => UploadedFile::fake()->create('post.pdf')]
+        ), $jwtToken);
+        $response->assertStatus(422);
+    }
+
+    public function test_update_my_profile_with_as_overloaded_image_size()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge(
+            $newData,
+            ['image' => UploadedFile::fake()->create('post.jpg')->size(5001)]
+        ), $jwtToken);
+        $response->assertStatus(422);
+    }
+
+    public function test_update_my_profile_with_password()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge(
+            $newData,
+            ['password' => "12345678", 'password_confirmation' => "12345678"]
+        ), $jwtToken);
+        $response->assertStatus(200);
+    }
+
+    public function test_update_my_profile_with_password_confirmation_missing()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge(
+            $newData,
+            ['password' => "12345678"]
+        ), $jwtToken);
+        $response->assertStatus(422);
+    }
+
+    public function test_update_my_profile_with_password_less_than_min()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $jwtToken = $this->headers($user);
+        $newData = $this->getUserNewData();
+        $response = $this->json('POST', '/api/user/edit/profile', array_merge(
+            $newData,
+            ['password' => "123", "password_confirmation" => "123"]
+        ), $jwtToken);
+        $response->assertStatus(422);
     }
 }
