@@ -6,6 +6,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ValidationErrorResource extends JsonResource
 {
+    protected $errors;
+
+    public function __construct($errors)
+    {
+        $this->errors = $errors;
+    }
     /**
      * Transform the resource into an array.
      *

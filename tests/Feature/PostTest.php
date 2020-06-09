@@ -54,9 +54,9 @@ class PostTest extends TestCase
         $postData = $this->getPostData();
         $imagesData = $this->getImages(5);
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData, ['images' => $imagesData]), $jwtToken);
-        $response->assertJson(['message' => "post created"]);
+        $response->assertJson(['message' => "Post Created"]);
         $response->assertStatus(200);
     }
 
@@ -66,7 +66,7 @@ class PostTest extends TestCase
         $postData = $this->getPostData();
         $imagesData = $this->getImages(5);
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData, ['images' => $imagesData]), $jwtToken);
         $response->assertStatus(500);
     }
@@ -77,7 +77,7 @@ class PostTest extends TestCase
         $jwtToken = $this->headers($user);
         $postData = $this->getPostData();
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData), $jwtToken);
         $response->assertStatus(422);
     }
@@ -89,7 +89,7 @@ class PostTest extends TestCase
         $postData = $this->getPostData();
         $imagesData = $this->getImages(6);
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData, ['images' => $imagesData]), $jwtToken);
 
         $response->assertStatus(422);
@@ -102,7 +102,7 @@ class PostTest extends TestCase
         $postData = $this->getPostData();
         $imagesData = $this->getImages(5);
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData, ['images' => $imagesData, 'body' => str_repeat('a', 5001)]), $jwtToken);
 
         $response->assertStatus(422);
@@ -119,7 +119,7 @@ class PostTest extends TestCase
         $image = UploadedFile::fake()->image('post.gif');
         $imagesData[] = $image;
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData, ['images' => $imagesData]), $jwtToken);
 
         $response->assertStatus(422);
@@ -136,7 +136,7 @@ class PostTest extends TestCase
         $image = UploadedFile::fake()->image('post.jpg')->size(5001);
         $imagesData[] = $image;
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData, ['images' => $imagesData]), $jwtToken);
 
         $response->assertStatus(422);
@@ -153,7 +153,7 @@ class PostTest extends TestCase
         $image = UploadedFile::fake()->create('post.pdf');
         $imagesData[] = $image;
 
-        $response = $this->json('POST', '/api/user/post/store',
+        $response = $this->json('POST', '/api/post/store',
             array_merge($postData, ['images' => $imagesData]), $jwtToken);
 
         $response->assertStatus(422);

@@ -42,7 +42,7 @@ class UserTest extends TestCase
     {
         $userData = $this->getUserData();
         $response = $this->json('POST', '/api/user/register', $userData);
-        $response->assertJson(['message' => "user registered"]);
+        $response->assertJson(['message' => "user registered successfully"]);
         $response->assertStatus(200);
     }
 
@@ -52,7 +52,7 @@ class UserTest extends TestCase
         Storage::fake('users');
         $image = UploadedFile::fake()->image('avatar.jpg');
         $response = $this->json('POST', '/api/user/register', array_merge($userData, ['image' => $image]));
-        $response->assertJson(['message' => "user registered"]);
+        $response->assertJson(['message' => "user registered successfully"]);
         $response->assertStatus(200);
     }
 

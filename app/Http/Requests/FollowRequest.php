@@ -28,7 +28,7 @@ class FollowRequest extends FormRequest
      */
     public function rules()
     {
-        $userId = JWTAuth::parseToken()->authenticate()->id;
+        $userId = auth('api')->user()->id;
 
         return [
             'user_id' => 'required|exists:users,id|not_in:' . $userId,

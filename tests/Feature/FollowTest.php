@@ -30,9 +30,13 @@ class FollowTest extends TestCase
         $follower = factory('App\User')->create();
         $jwtToken = $this->headers($follower);
         $user = factory('App\User')->create();
-        $response = $this->json('POST', '/api/user/follow',
-            array_merge(['user_id' => $user->id]), $jwtToken);
-        $response->assertJson(['message' => "followed successfully"]);
+        $response = $this->json(
+            'POST',
+            '/api/user/follow',
+            array_merge(['user_id' => $user->id]),
+            $jwtToken
+        );
+        $response->assertJson(['message' => "Followed Successfully"]);
         $response->assertStatus(200);
     }
 
@@ -40,8 +44,12 @@ class FollowTest extends TestCase
     {
         $follower = factory('App\User')->create();
         $jwtToken = $this->headers($follower);
-        $response = $this->json('POST', '/api/user/follow',
-            array_merge(['user_id' => $follower->id]), $jwtToken);
+        $response = $this->json(
+            'POST',
+            '/api/user/follow',
+            array_merge(['user_id' => $follower->id]),
+            $jwtToken
+        );
         $response->assertStatus(422);
     }
 
@@ -49,8 +57,12 @@ class FollowTest extends TestCase
     {
         $follower = factory('App\User')->create();
         $jwtToken = $this->headers($follower);
-        $response = $this->json('POST', '/api/user/follow',
-            array_merge([]), $jwtToken);
+        $response = $this->json(
+            'POST',
+            '/api/user/follow',
+            array_merge([]),
+            $jwtToken
+        );
         $response->assertStatus(422);
     }
 
@@ -61,13 +73,21 @@ class FollowTest extends TestCase
 
         $jwtToken = $this->headers($follower);
 
-        $this->json('POST', '/api/user/follow',
-            array_merge(['user_id' => $user->id]), $jwtToken);
+        $this->json(
+            'POST',
+            '/api/user/follow',
+            array_merge(['user_id' => $user->id]),
+            $jwtToken
+        );
 
-        $response = $this->json('POST', '/api/user/follow',
-            array_merge(['user_id' => $user->id]), $jwtToken);
+        $response = $this->json(
+            'POST',
+            '/api/user/follow',
+            array_merge(['user_id' => $user->id]),
+            $jwtToken
+        );
 
-        $response->assertJson(['message' => "You Already Follow This User"]);
+        $response->assertJson(['message' => "You Already Followed This User"]);
         $response->assertStatus(403);
     }
 
@@ -83,10 +103,14 @@ class FollowTest extends TestCase
             'follower_id' => $follower->id,
         ]);
 
-        $response = $this->json('POST', '/api/user/unfollow',
-            ['user_follow_id' => $userFollow->id], $jwtToken);
+        $response = $this->json(
+            'POST',
+            '/api/user/unfollow',
+            ['user_follow_id' => $userFollow->id],
+            $jwtToken
+        );
 
-        $response->assertJson(['message' => "unfollowed successfully"]);
+        $response->assertJson(['message' => "UnFollowed Successfully"]);
         $response->assertStatus(200);
     }
 
@@ -102,8 +126,12 @@ class FollowTest extends TestCase
             'follower_id' => $follower->id,
         ]);
 
-        $response = $this->json('POST', '/api/user/unfollow',
-            array_merge(['user_follow_id' => $follower->id]), $jwtToken);
+        $response = $this->json(
+            'POST',
+            '/api/user/unfollow',
+            array_merge(['user_follow_id' => $follower->id]),
+            $jwtToken
+        );
 
         $response->assertStatus(422);
     }
@@ -120,8 +148,12 @@ class FollowTest extends TestCase
             'follower_id' => $follower->id,
         ]);
 
-        $response = $this->json('POST', '/api/user/unfollow',
-            array_merge(['user_follow_id' => $userFollow->id]), $jwtToken);
+        $response = $this->json(
+            'POST',
+            '/api/user/unfollow',
+            array_merge(['user_follow_id' => $userFollow->id]),
+            $jwtToken
+        );
 
         $response->assertStatus(422);
     }
@@ -138,8 +170,12 @@ class FollowTest extends TestCase
             'follower_id' => $follower->id,
         ]);
 
-        $response = $this->json('POST', '/api/user/unfollow',
-            array_merge([]), $jwtToken);
+        $response = $this->json(
+            'POST',
+            '/api/user/unfollow',
+            array_merge([]),
+            $jwtToken
+        );
 
         $response->assertStatus(422);
     }

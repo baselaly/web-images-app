@@ -31,7 +31,7 @@ class UserController extends Controller
             DB::beginTransaction();
             $this->userService->register();
             DB::commit();
-            return response()->json(new SuccessResource('user resgistered successfully'), 200);
+            return response()->json(new SuccessResource('user registered successfully'), 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(new ErrorResource($e->getMessage()), 500);
