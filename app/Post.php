@@ -20,7 +20,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $with = ['images', 'user'];
+    protected $with = ['images', 'user', 'likes'];
 
     public function setBodyAttribute($value)
     {

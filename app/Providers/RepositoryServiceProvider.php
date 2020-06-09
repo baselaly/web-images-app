@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Like\LikeRepository;
+use App\Repositories\Like\LikeRepositoryInterface;
 use App\Repositories\Post\PostRepository;
 use App\Repositories\Post\PostRepositoryInterface;
 use App\Repositories\UserFollower\UserFollowerRepository;
@@ -22,7 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
         $this->app->bind(UserFollowerRepositoryInterface::class, UserFollowerRepository::class);
-
+        $this->app->bind(LikeRepositoryInterface::class, LikeRepository::class);
     }
 
     /**
