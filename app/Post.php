@@ -52,6 +52,11 @@ class Post extends Model
         return $this->hasMany('App\PostImage');
     }
 
+    public function likes()
+    {
+        return $this->morphMany('App\Like', 'likeable');
+    }
+
     public function scopeActive($query)
     {
         $query->where('active', 1);
