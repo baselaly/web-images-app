@@ -12,7 +12,7 @@ use Tests\TestCase;
 class PostTest extends TestCase
 {
     use RefreshDatabase;
-    use WithoutMiddleware;
+    // use WithoutMiddleware;
 
     public function getPostData()
     {
@@ -76,7 +76,7 @@ class PostTest extends TestCase
             array_merge($postData, ['images' => $imagesData]),
             $jwtToken
         );
-        $response->assertStatus(500);
+        $response->assertStatus(401);
     }
 
     public function test_store_post_without_images()
@@ -225,5 +225,35 @@ class PostTest extends TestCase
 
         $response->assertStatus(404);
         $response->assertJson(['message' => 'Not Found']);
+    }
+
+    public function test_update_post()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $post = factory('App\Post')->create(['user_id' => $user->id]);
+        $jwtToken = $this->headers($user);
+        $response = $this->json('POST', "/api/post/update/$post->id", ['body' => 'new body'], $jwtToken);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_update_post_for_not_authenticated_user()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $post = factory('App\Post')->create(['user_id' => $user->id]);
+        $jwtToken = $this->headers();
+        $response = $this->json('POST', "/api/post/update/$post->id", ['body' => 'new body'], $jwtToken);
+
+        $response->assertStatus(401);
+    }
+
+    public function test_update_post_with_max_body_length()
+    {
+        $user = factory('App\User')->create(['active' => 1]);
+        $post = factory('App\Post')->create(['user_id' => $user->id]);
+        $jwtToken = $this->headers($user);
+        $response = $this->json('POST', "/api/post/update/$post->id", ['body' => str_repeat('a', 5001)], $jwtToken);
+
+        $response->assertStatus(422);
     }
 }
