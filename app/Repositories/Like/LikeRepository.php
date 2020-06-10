@@ -15,7 +15,7 @@ class LikeRepository implements LikeRepositoryInterface
 
     public function create(array $data)
     {
-        $this->like->create($data);
+        return $this->like->create($data);
     }
 
     public function getSingleBy(array $data = [])
@@ -31,6 +31,6 @@ class LikeRepository implements LikeRepositoryInterface
 
     public function delete($like)
     {
-        $like->delete();
+        return $like->delete();
     }
 }

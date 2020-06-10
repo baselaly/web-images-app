@@ -17,7 +17,7 @@ class LikeService
     {
         if ($like = $this->checkLike($likeableType, $likeableId, $userId)) {
             $this->delete($like);
-            return;
+            return $like->likeable->likes->count();
         }
 
         $likeData = [
@@ -26,7 +26,8 @@ class LikeService
             'likeable_id' => $likeableId
         ];
 
-        $this->like->create($likeData);
+        $like = $this->like->create($likeData);
+        return $like->likeable->likes->count();
     }
 
     public function checkLike($likeableType, $likeableId, $userId)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LikePostRequest;
+use App\Http\Resources\Like\LikeResource;
 use App\Services\LikeService;
 
 class LikeController extends Controller
@@ -15,10 +16,9 @@ class LikeController extends Controller
         $this->likeService = $likeService;
     }
 
-
     public function likePost(LikePostRequest $request)
     {
-        $this->likeService->likeToggle('App\Post', $request->post_id, auth('api')->user()->id);
-        return 'done';
+        $likesCount = $this->likeService->likeToggle('App\Post', $request->post_id, auth('api')->user()->id);
+        return response()->json(new LikeResource($likesCount), 200);
     }
 }
