@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Jobs\SendMail;
+use App\Mail\RegisterMail;
 use App\Repositories\User\UserRepositoryInterface;
+use Carbon\Carbon;
 use JWTAuth;
 
 class UserService
@@ -19,6 +22,9 @@ class UserService
     {
         $userData = request()->except('password_confirmation');
         $this->user->create($userData);
+        $email = new RegisterMail('Welcome Mail', 'Welcome To Your Web Images App');
+        $welcomeEmail = (new SendMail(request('email'), $email))->delay(Carbon::now()->addSeconds(5));
+        dispatch($welcomeEmail);
     }
 
     public function login()
