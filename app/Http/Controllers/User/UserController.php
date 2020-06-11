@@ -55,7 +55,7 @@ class UserController extends Controller
     {
         try {
             $this->userService->logout();
-            return response()->json(['message' => 'user logged out'], 200);
+            return response()->json(new SuccessResource('User Logged Out'), 200);
         } catch (\Exception $e) {
             return response()->json(new ErrorResource($e->getMessage()), 500);
         }
