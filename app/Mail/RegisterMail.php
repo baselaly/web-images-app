@@ -32,7 +32,7 @@ class RegisterMail extends Mailable
      */
     public function build()
     {
-        $email = $this->from('webImages@app.com')->subject($this->subject)->view('RegisterMail');
+        $email = $this->from('webImages@app.com')->subject($this->subject)->view('emails.RegisterMail');
 
         $email->with([
             'messageData' => $this->message,
