@@ -34,8 +34,6 @@ class RegisterUserRequest extends FormRequest
             'password' => 'required|min:8|max:100|confirmed',
         ];
 
-        $rules['image'] = request('image') ? 'required|image|mimes:jpg,jpeg,png|max:5000' : '';
-
         return $rules;
     }
 

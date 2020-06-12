@@ -20,7 +20,13 @@ class UserService
 
     public function register()
     {
-        $userData = request()->except('password_confirmation');
+        $userData = [
+            'first_name' => request('first_name'),
+            'last_name' => request('last_name'),
+            'password' => request('password'),
+            'email' => request('email')
+        ];
+
         $this->user->create($userData);
         $email = new RegisterMail('Welcome Mail', 'Welcome To Your Web Images App');
         $welcomeEmail = (new SendMail(request('email'), $email))->delay(Carbon::now()->addSeconds(5));
