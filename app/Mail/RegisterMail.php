@@ -35,7 +35,7 @@ class RegisterMail extends Mailable
         $email = $this->from('webImages@app.com')->subject($this->subject)->view('emails.RegisterMail');
 
         $email->with([
-            'messageData' => $this->message,
+            'data' => ['message' => $this->message],
         ])->priority(1);
     }
 }
