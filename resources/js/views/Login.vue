@@ -52,6 +52,9 @@ export default {
       snackbarMessage: ""
     };
   },
+  created() {
+    this.activate();
+  },
   methods: {
     login() {
       let email = this.email;
@@ -74,6 +77,26 @@ export default {
             return;
           }
           this.showSnackBar("red", "Something Went Wrong");
+        });
+    },
+    activate() {
+      let token = this.$route.query.token;
+      if (!token) {
+        return;
+      }
+      axios
+        .get(`/user/activate/${token}`)
+        .then(response => {
+          let message = response.data.message;
+          this.showSnackBar("green", "your account activated, you can login");
+        })
+        .catch(error => {
+          let status = error.response.status;
+          if (status === 404) {
+            this.showSnackBar("green", "your account already activated, you can login");
+            return;
+          }
+          this.showSnackBar("red", "something went wrong");
         });
     },
     showSnackBar(color, message) {

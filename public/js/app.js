@@ -1895,6 +1895,9 @@ __webpack_require__.r(__webpack_exports__);
       snackbarMessage: ""
     };
   },
+  created: function created() {
+    this.activate();
+  },
   methods: {
     login: function login() {
       var _this = this;
@@ -1923,6 +1926,31 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         _this.showSnackBar("red", "Something Went Wrong");
+      });
+    },
+    activate: function activate() {
+      var _this2 = this;
+
+      var token = this.$route.query.token;
+
+      if (!token) {
+        return;
+      }
+
+      axios.get("/user/activate/".concat(token)).then(function (response) {
+        var message = response.data.message;
+
+        _this2.showSnackBar("green", "your account activated, you can login");
+      })["catch"](function (error) {
+        var status = error.response.status;
+
+        if (status === 404) {
+          _this2.showSnackBar("green", "your account already activated, you can login");
+
+          return;
+        }
+
+        _this2.showSnackBar("red", "something went wrong");
       });
     },
     showSnackBar: function showSnackBar(color, message) {
