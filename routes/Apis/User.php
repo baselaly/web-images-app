@@ -4,6 +4,7 @@ Route::group(['namespace' => 'User', 'prefix' => 'user', 'as' => 'users.'], func
     Route::post('/register', ['as' => 'register', 'uses' => 'UserController@register']);
     Route::post('/login', ['as' => 'login', 'uses' => 'UserController@login']);
     Route::get('/logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
+    Route::get('/activate/{token}', ['as' => 'activate', 'uses' => 'UserController@activateUser']);
 
     Route::group(['middleware' => 'user_auth'], function () {
         Route::post('/follow', ['as' => 'follow.store', 'uses' => 'UserFollowerController@store']);

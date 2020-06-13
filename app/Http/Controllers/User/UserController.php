@@ -98,4 +98,12 @@ class UserController extends Controller
             return response()->json(new ErrorResource($e->getMessage()), 500);
         }
     }
+
+    public function activateUser($token)
+    {
+        if (!$this->userService->activateUser($token)) {
+            return response()->json(new NotFoundResource(request()), 404);
+        }
+        return response()->json(new SuccessResource('User Activated Successfully'), 200);
+    }
 }

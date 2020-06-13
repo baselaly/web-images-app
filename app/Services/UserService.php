@@ -20,15 +20,17 @@ class UserService
 
     public function register()
     {
+        $token = uniqid() . time();
         $userData = [
             'first_name' => request('first_name'),
             'last_name' => request('last_name'),
             'password' => request('password'),
-            'email' => request('email')
+            'email' => request('email'),
+            'activation_token' => $token,
         ];
 
         $this->user->create($userData);
-        $email = new RegisterMail('Welcome Mail', 'Welcome To Your Web Images App');
+        $email = new RegisterMail('Welcome Mail', 'Welcome To Your Web Images App', $token);
         $welcomeEmail = (new SendMail(request('email'), $email))->delay(Carbon::now()->addSeconds(5));
         dispatch($welcomeEmail);
     }
@@ -68,5 +70,18 @@ class UserService
         $user = $this->getActiveUser($userId);
 
         $this->user->update($user, $userData);
+    }
+
+    public function activateUser($token)
+    {
+        $user = $this->user->getUserBy(['activation_token' => $token]);
+
+        if (!$user) {
+            return false;
+        }
+
+        $data = ['active' => 1, 'activation_token' => null];
+        $this->user->update($user, $data);
+        return true;
     }
 }

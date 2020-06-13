@@ -13,16 +13,18 @@ class RegisterMail extends Mailable
 
     public $message;
     public $subject;
+    public $token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($subject, $message)
+    public function __construct($subject, $message, $token)
     {
         $this->message = $message;
         $this->subject = $subject;
+        $this->token = $token;
     }
 
     /**
@@ -35,7 +37,7 @@ class RegisterMail extends Mailable
         $email = $this->from('webImages@app.com')->subject($this->subject)->view('emails.RegisterMail');
 
         $email->with([
-            'data' => ['message' => $this->message],
+            'data' => ['message' => $this->message, 'link' => url('/') . "login?token=$this->token"],
         ])->priority(1);
     }
 }
