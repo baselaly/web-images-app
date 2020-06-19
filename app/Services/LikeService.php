@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Repositories\like\likeRepositoryInterface;
+use App\Repositories\Like\LikeRepositoryInterface;
 
 class LikeService
 {
     private $like;
 
-    public function __construct(likeRepositoryInterface $like)
+    public function __construct(LikeRepositoryInterface $like)
     {
         $this->like = $like;
     }

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Like;
+use App\Observers\LikeObserver;
 use App\Observers\PostObserver;
 use App\Observers\UserObserver;
 use App\Post;
@@ -29,5 +31,6 @@ class ObserverProvider extends ServiceProvider
     {
         Post::observe(new PostObserver());
         User::observe(new UserObserver());
+        Like::observe(new LikeObserver());
     }
 }
