@@ -29,8 +29,8 @@ class LikeRepository implements LikeRepositoryInterface
         return $like->first();
     }
 
-    public function delete($like)
+    public function delete($id)
     {
-        return $like->delete();
+        return $this->like->where('id', $id)->delete();
     }
 }

@@ -67,9 +67,7 @@ class UserService
 
         request('password') ? $userData['password'] = request('password') : '';
 
-        $user = $this->getActiveUser($userId);
-
-        $this->user->update($user, $userData);
+        $this->user->update($userId, $userData);
     }
 
     public function activateUser($token)

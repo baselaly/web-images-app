@@ -74,7 +74,7 @@ class PostController extends Controller
                 return response()->json(new NotAuthorizedResource('Not Authorized'), 403);
             }
 
-            $this->postService->delete($post);
+            $this->postService->delete($id);
             DB::commit();
 
             return response()->json(new SuccessResource('Post Deleted'), 200);
@@ -98,7 +98,7 @@ class PostController extends Controller
                 return response()->json(new NotAuthorizedResource('Not Authorized'), 403);
             }
 
-            $this->postService->update($post);
+            $this->postService->update($id);
             DB::commit();
 
             return response()->json(new SuccessResource('Post Updated'), 200);

@@ -8,5 +8,6 @@ interface UserRepositoryInterface
 {
     public function create(array $userData);
     public function getUserBy(array $columns = []);
-    public function update(User $user, array $userData);
+    public function update(int $id, array $userData);
+    public function getAllBy(array $columns = [], array $keywords = [], array $ids = []);
 }

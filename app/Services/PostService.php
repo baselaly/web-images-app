@@ -65,17 +65,17 @@ class PostService
         }
     }
 
-    public function delete($post)
+    public function delete($id)
     {
-        $this->post->delete($post);
+        $this->post->delete($id);
     }
 
-    public function update($post)
+    public function update($id)
     {
         $postData = [
             'body' => request('body')
         ];
 
-        $this->post->update($post, $postData);
+        $this->post->update($id, $postData);
     }
 }

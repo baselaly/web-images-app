@@ -29,8 +29,12 @@ class UserRepository implements UserRepositoryInterface
         return $user->first();
     }
 
-    public function update(User $user, array $userData)
+    public function update(id $id, array $userData)
     {
-        return $user->update($userData);
+        return $this->user->where('id', $id)->update($userData);
+    }
+
+    public function getAllBy(array $columns = [], array $keywords = [], array $ids = [])
+    {
     }
 }

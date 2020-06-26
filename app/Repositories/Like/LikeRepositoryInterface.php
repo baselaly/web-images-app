@@ -8,5 +8,5 @@ interface LikeRepositoryInterface
 {
     public function create(array $data);
     public function getSingleBy(array $data = []);
-    public function delete(Like $like);
+    public function delete(int $id);
 }

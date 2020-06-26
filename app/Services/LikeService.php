@@ -16,7 +16,7 @@ class LikeService
     public function likeToggle($likeableType, $likeableId, $userId)
     {
         if ($like = $this->checkLike($likeableType, $likeableId, $userId)) {
-            $this->delete($like);
+            $this->delete($like->id);
             return $like->likeable->likes->count();
         }
 
@@ -41,8 +41,8 @@ class LikeService
         return $this->like->getSingleBy($getData);
     }
 
-    public function delete($like)
+    public function delete($id)
     {
-        $this->like->delete($like);
+        $this->like->delete($id);
     }
 }
