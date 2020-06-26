@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Repositories\Like;
-
-use App\Like;
-
 interface LikeRepositoryInterface
 {
     public function create(array $data);
