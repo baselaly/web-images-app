@@ -79,7 +79,7 @@ class UserService
         }
 
         $data = ['active' => 1, 'activation_token' => null];
-        $this->user->update($user, $data);
+        $this->user->update($user->id, $data);
         return true;
     }
 }
