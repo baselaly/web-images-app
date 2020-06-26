@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\PostCreated;
 use App\Repositories\Post\PostRepositoryInterface;
 
 class PostService
@@ -22,7 +23,8 @@ class PostService
             $postImages[] = ['image' => $image];
         }
 
-        $this->post->create($postData, $postImages);
+        $post = $this->post->create($postData, $postImages);
+        event(new PostCreated($post));
     }
 
     public function getUserPosts($userId)
