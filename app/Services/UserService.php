@@ -82,4 +82,11 @@ class UserService
         $this->user->update($user->id, $data);
         return true;
     }
+
+    public function getUserFollowers($userId)
+    {
+        $user = $this->getActiveUser($userId);
+        $followersIds = $user->followers->pluck('follower_id')->toArray();
+        return $this->user->getAllBy(['user_ids' => $followersIds]);
+    }
 }
