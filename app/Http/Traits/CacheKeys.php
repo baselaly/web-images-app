@@ -4,21 +4,21 @@ namespace App\Http\Traits;
 
 trait CacheKeys
 {
-    public static function getPostsKey(array $columns = [], array $userIds = []): string
+    public static function getPostsKey(array $filters = []): string
     {
         $page = request('page') ?: 1;
         $cacheKey = 'posts';
 
-        foreach ($columns as $key => $value) {
-            $cacheKey = $cacheKey . '.' . $key . '.' . $value;
+        foreach ($filters as $key => $value) {
+            if ($key === 'user_ids') {
+                count($value) === 1 ? $cacheKey .= '.user_id.' . end($value)
+                    : $cacheKey .= '.homePage.' . end($value);
+                continue;
+            }
+            $cacheKey .= '.' . $key . '.' . $value;
         }
 
-        if (count($userIds)) {
-            // specify that cached home page for that authenticated user as we pushed its id at the end of array in service
-            $cacheKey = $cacheKey . '.homePage.' . end($userIds);
-        }
-
-        $cacheKey = $cacheKey . '.page.' . $page;
+        $cacheKey .= '.page.' . $page;
 
         return $cacheKey;
     }

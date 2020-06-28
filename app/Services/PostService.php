@@ -29,19 +29,19 @@ class PostService
 
     public function getUserPosts($userId)
     {
-        return $this->post->getPostsBy(['user_id' => $userId]);
+        return $this->post->getPostsBy(['user_ids' => [$userId]], 15);
     }
 
     public function getUserActivePosts($userId)
     {
-        return $this->post->getPostsBy(['user_id' => $userId, 'active' => 1]);
+        return $this->post->getPostsBy(['user_ids' => [$userId], 'active' => 1], 15);
     }
 
     public function getHomePosts($user)
     {
         $followingIds = $user->followings->pluck('user_id')->toArray();
         array_push($followingIds, $user->id);
-        return $this->post->getPostsBy(['active' => 1], $followingIds);
+        return $this->post->getPostsBy(['active' => 1, 'user_ids' => $followingIds], 15);
     }
 
     public function getSinglePost($id)

@@ -4,6 +4,10 @@ namespace App\Repositories\Post;
 
 use App\Post;
 use App\Http\Traits\CacheKeys;
+use App\QueryFilters\Post\ActiveFilter;
+use App\QueryFilters\Post\KeywordFilter;
+use App\QueryFilters\Post\UserIdsFilter;
+use Illuminate\Pipeline\Pipeline;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -23,33 +27,35 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    public function getPostsBy(array $columns = [], array $userIds = [])
+    public function getPostsBy(array $filters = [], int $paginate = 0)
     {
-        $cacheKey = CacheKeys::getPostsKey($columns, $userIds);
-        return cache()->remember($cacheKey, env('CACHE_EXPIRE'), function () use ($columns, $userIds) {
-            $posts = $this->post->newQuery();
+        $cacheKey = CacheKeys::getPostsKey($filters);
+        dd($cacheKey);
+        return cache()->remember($cacheKey, env('CACHE_EXPIRE'), function () use ($filters, $paginate) {
+            $posts = app(Pipeline::class)
+                ->send($this->post->query())
+                ->through([
+                    new UserIdsFilter($filters),
+                    new ActiveFilter($filters),
+                    new KeywordFilter($filters)
+                ])
+                ->thenReturn();
 
-            foreach ($columns as $column => $value) {
-                $posts->where($column, $value);
-            }
-
-            if (count($userIds)) {
-                $posts->whereIn('user_id', $userIds);
-            }
-
-            return $posts->latest()->paginate(20);
+            $posts = $paginate && $paginate !== 0 ? $posts->paginate($paginate) : $posts->get();
+            return $posts;
         });
     }
 
-    public function getSinglePostBy(array $columns = [])
+    public function getSinglePostBy(array $filters = [])
     {
-        $post = $this->post->newQuery();
-
-        foreach ($columns as $column => $value) {
-            $post->where($column, $value);
-        }
-
-        return $post->first();
+        return app(Pipeline::class)
+            ->send($this->post->query())
+            ->through([
+                new UserIdsFilter($filters),
+                new ActiveFilter($filters),
+                new KeywordFilter($filters),
+            ])
+            ->thenReturn()->first();
     }
 
     public function delete(int $id)

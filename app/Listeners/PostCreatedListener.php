@@ -35,7 +35,6 @@ class PostCreatedListener
         $post = $event->post;
         $body = $post->user->fullname . " Publish New Post";
         $followers = $this->userService->getUserFollowers($post->user_id);
-        dd($followers->toArray());
         Notification::send($followers, (new SendNotification($body))->delay(Carbon::now()->addSeconds(2)));
     }
 }
