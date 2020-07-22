@@ -27,6 +27,7 @@
               ></v-text-field>
               <router-link class="ma-5" to="register">Create Account?</router-link>
               <v-btn color="orange lighten-1" @click="login">Sign In</v-btn>
+              <multi-select :value="[]" :options="[{value:'basel',label:'name'}]"></multi-select>
             </v-form>
           </v-card>
         </v-col>
@@ -39,7 +40,12 @@
   </v-app>
 </template>
 <script>
+import MultiSelect from "../components/MultiSelect";
+
 export default {
+  components: {
+    MultiSelect
+  },
   data() {
     return {
       email: "",
@@ -93,7 +99,10 @@ export default {
         .catch(error => {
           let status = error.response.status;
           if (status === 404) {
-            this.showSnackBar("green", "your account already activated, you can login");
+            this.showSnackBar(
+              "green",
+              "your account already activated, you can login"
+            );
             return;
           }
           this.showSnackBar("red", "something went wrong");
