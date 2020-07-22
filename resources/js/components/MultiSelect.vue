@@ -47,7 +47,7 @@
             v-bind="{ item, index, labelProperty, valueProperty, searchTerm, highlightSearchTerm, isSelected, addItem, getKey }"
           >
             <li
-              is="sw-select-result"
+              is="select-result"
               :selected="isSelected(item)"
               @item-select="addItem"
               v-bind="{ item, index }"
@@ -79,6 +79,8 @@ import SelectBase from "./SelectBase";
 import SelectResultList from "./SelectResultList";
 import SelectSelectionList from "./SelectSelectionList";
 import HighlightText from "./HighlightText";
+import SelectResult from "./SelectResult";
+
 import { get, set } from "../core/object.utils";
 
 export default {
@@ -87,7 +89,8 @@ export default {
     HighlightText,
     SelectBase,
     SelectResultList,
-    SelectSelectionList
+    SelectSelectionList,
+    SelectResult
   },
   model: {
     prop: "value",

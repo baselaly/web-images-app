@@ -86,7 +86,7 @@ $sw-field-transition: border-color 0.3s ease-out, background 0.3s ease;
     font-family: $font-family-base;
     line-height: 22px;
     transition: $sw-field-transition;
-    color: gray;
+    color: #80808061;
     outline: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -98,7 +98,7 @@ $sw-field-transition: border-color 0.3s ease-out, background 0.3s ease;
     }
 
     &:disabled {
-      background: gray;
+      background: #80808061;
       border-color: black;
       cursor: default !important;
     }

@@ -23,7 +23,7 @@
         ></slot>
         <div class="sw-select__selection-indicators">
           <loader v-if="isLoading" class="sw-select__select-indicator" size="16px"></loader>
-          <!-- <icon class="sw-select__select-indicator" name="small-arrow-medium-down" small></icon> -->
+          <icon class="sw-select__select-indicator" name="small-arrow-medium-down" small></icon>
         </div>
       </div>
 
@@ -152,7 +152,7 @@ $sw-select-focus-transition: all ease-in-out 0.2s;
     font-size: $font-size-sm;
     font-family: $font-family-base;
     line-height: 22px;
-    color: gray;
+    color: #80808061;
     outline: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -205,15 +205,15 @@ $sw-select-focus-transition: all ease-in-out 0.2s;
 
   &.is--disabled {
     .sw-block-field__block {
-      background-color: gray;
+      background-color: #80808061;
     }
 
     .sw-label {
-      background-color: gray;
+      background-color: #80808061;
     }
 
     input {
-      background-color: gray;
+      background-color: #80808061;
     }
   }
 }

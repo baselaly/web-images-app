@@ -27,7 +27,16 @@
               ></v-text-field>
               <router-link class="ma-5" to="register">Create Account?</router-link>
               <v-btn color="orange lighten-1" @click="login">Sign In</v-btn>
-              <multi-select :value="[]" :options="[{value:'basel',label:'name'}]"></multi-select>
+              <multi-select
+                :value="multiSelects"
+                :options="[
+              {value:'basel',label:'damsnkj'},{value:'asdb',label:'dasnm'},
+              {value:'dasjdk',label:'dnjaksd'},{value:'czxcf',label:'vfkjnk'}
+              ]"
+                @item-add="addToMultiSelects"
+                @item-remove="removeFromMultiSelects"
+              ></multi-select>
+              <multi-tag-select @change="getItems" :value="multiTags"></multi-tag-select>
             </v-form>
           </v-card>
         </v-col>
@@ -41,10 +50,12 @@
 </template>
 <script>
 import MultiSelect from "../components/MultiSelect";
+import MultiTagSelect from "../components/MultiTagSelect";
 
 export default {
   components: {
-    MultiSelect
+    MultiSelect,
+    MultiTagSelect
   },
   data() {
     return {
@@ -55,7 +66,9 @@ export default {
       show_password: false,
       snackbar: false,
       snackbarColor: "",
-      snackbarMessage: ""
+      snackbarMessage: "",
+      multiTags: ["lorem", "ipsum", "dolor", "sit", "amet"],
+      multiSelects: ["basel"]
     };
   },
   created() {
@@ -112,6 +125,20 @@ export default {
       this.snackbarColor = color;
       this.snackbarMessage = message;
       this.snackbar = true;
+    },
+    getItems(value) {
+      this.multiTags = value;
+    },
+    addToMultiSelects(value) {
+      this.multiSelects.push(value.value);
+    },
+    removeFromMultiSelects(value) {
+      let removed = value.value;
+      let index = this.multiSelects.indexOf(removed);
+      if (index > -1) {
+        this.multiSelects.splice(index, 1);
+      }
+      console.log(this.multiSelects);
     }
   }
 };

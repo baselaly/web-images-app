@@ -8,14 +8,14 @@
       :data-id="selection[valueProperty]"
     >
       <slot name="selected-option" v-bind="{ selection, defaultLabel: selection[labelProperty] }">
-        <label @dismiss="onClickDismiss(selection)" :size="size">
+        <wl-label @dismiss="onClickDismiss(selection)" :size="size">
           <span class="sw-select-selection-list__item">
             <slot
               name="label-property"
               v-bind="{ item: selection, index, labelProperty, valueProperty }"
             >{{ selection[labelProperty] }}</slot>
           </span>
-        </label>
+        </wl-label>
       </slot>
     </li>
 
@@ -45,13 +45,13 @@
 </template>
 <script>
 import Button from "./Button";
-import Label from "./Label";
+import WlLabel from "./WlLabel";
 
 export default {
   name: "SelectSelectionList",
   components: {
     Button,
-    Label
+    WlLabel
   },
   props: {
     selections: {

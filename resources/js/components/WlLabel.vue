@@ -1,7 +1,7 @@
 <template>
   <span class="sw-label" :class="labelClasses" @click.stop="$emit('selected')">
     <span class="sw-label__caption">
-      <slot>{% block sw_label_slot_default %}{% endblock %}</slot>
+      <slot></slot>
     </span>
 
     <button
@@ -19,7 +19,7 @@
 <script>
 import Icon from "./Icon";
 export default {
-  name: "Label",
+  name: "WlLabel",
   components: {
     Icon
   },
@@ -143,9 +143,9 @@ $sw-label-pill-border-radius: 50px;
   font-size: 12px;
   height: 32px;
   border: 1px solid gray;
-  background: gray;
+  background: #80808061;
   border-radius: $sw-label-border-radius;
-  color: gray;
+  color: #80808061;
   cursor: default;
 
   .sw-label__caption {
@@ -185,8 +185,8 @@ $sw-label-pill-border-radius: 50px;
     height: 100%;
     right: 10px;
     top: 0;
-    color: gray;
-    background-color: gray;
+    color: #80808061;
+    background-color: #80808061;
     border: 0 none;
     cursor: pointer;
     outline: none;
@@ -199,7 +199,7 @@ $sw-label-pill-border-radius: 50px;
 
   &.sw-label--ghost {
     background: transparent;
-    border-color: gray;
+    border-color: #80808061;
   }
 
   &.sw-label--appearance-pill {

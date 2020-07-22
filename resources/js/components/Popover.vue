@@ -4,15 +4,14 @@
       class="sw-popover__wrapper"
       :class="popoverClass"
       :style="componentStyle"
-      v-popover="popoverConfig"
-    >
+      >
       <slot></slot>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "Popover",
+  name: "popover",
   props: {
     zIndex: {
       type: [Number, null],

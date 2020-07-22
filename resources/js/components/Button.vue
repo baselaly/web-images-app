@@ -117,8 +117,8 @@ $sw-button-transition: all 0.15s ease-out;
 
 .sw-button {
   border: 1px solid gray;
-  background: gray;
-  color: gray;
+  background: #80808061;
+  color: #80808061;
   transition: $sw-button-transition;
   display: inline-block;
   border-radius: 3;
@@ -150,27 +150,27 @@ $sw-button-transition: all 0.15s ease-out;
 
   &:hover:not(.sw-button--disabled),
   &:hover:not([disabled]) {
-    background: gray;
+    background: #80808061;
   }
 
   &:active:not(.sw-button--disabled) {
-    background: gray;
-    border-color: gray;
+    background: #80808061;
+    border-color: #80808061;
   }
 
   &:disabled,
   &.sw-button--disabled {
-    color: gray0;
-    border-color: gray;
+    color: #808080610;
+    border-color: #80808061;
     cursor: not-allowed;
 
     .sw-icon {
-      color: gray;
+      color: #80808061;
     }
   }
 
   .sw-icon {
-    color: gray;
+    color: #80808061;
   }
 
   &.sw-button--primary {
@@ -215,12 +215,12 @@ $sw-button-transition: all 0.15s ease-out;
 
   &.sw-button--contrast {
     background: yellow;
-    color: gray;
+    color: #80808061;
     line-height: 36px;
     border: 0 none;
 
     .sw-icon {
-      color: gray;
+      color: #80808061;
     }
 
     &.sw-button--x-small {
@@ -246,10 +246,10 @@ $sw-button-transition: all 0.15s ease-out;
     &:disabled,
     &.sw-button--disabled {
       background: yellow;
-      color: gray;
+      color: #80808061;
 
       .sw-icon {
-        color: gray;
+        color: #80808061;
       }
     }
   }

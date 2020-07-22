@@ -1,7 +1,7 @@
 <template>
-  <div class="sw-select-result-list" @scroll="onScroll">
+  <div @scroll="onScroll">
     <popover
-      class="sw-select-result-list-popover"
+      class=""
       :popoverClass="popoverClass"
       :popoverConfigExtension="popoverConfig"
       :zIndex="1100"
@@ -34,13 +34,13 @@
 </template>
 <script>
 import Icon from "./Icon";
-import Popover from "./Popover";
+import popover from "./popover";
 
 export default {
   name: "SelectResultList",
   components: {
     Icon,
-    Popover
+    popover
   },
   provide() {
     return {

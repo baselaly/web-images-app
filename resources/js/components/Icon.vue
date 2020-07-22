@@ -1,12 +1,11 @@
 <template>
-  <div
+  <span
     class="sw-icon"
     v-on="$listeners"
     :class="classes"
-    :is="iconName"
     :style="styles"
     :aria-hidden="decorative"
-  ></div>
+  ></span>
 </template>
 <script>
 export default {
