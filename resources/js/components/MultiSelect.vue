@@ -79,6 +79,7 @@ import SelectBase from "./SelectBase";
 import SelectResultList from "./SelectResultList";
 import SelectSelectionList from "./SelectSelectionList";
 import HighlightText from "./HighlightText";
+import { get, set } from "../core/object.utils";
 
 export default {
   name: "MultiSelect",
